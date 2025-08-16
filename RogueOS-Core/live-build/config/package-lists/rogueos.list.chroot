@@ -1,0 +1,13 @@
+systemd-sysv
+live-boot
+live-config
+sudo
+network-manager
+xorg
+curl
+git
+bash
+cmake
+libsdl2-dev
+liblvgl-dev
+libboost-system-dev
