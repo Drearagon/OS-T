@@ -1,0 +1,9 @@
+#!/bin/bash
+lb config \
+    --distribution bookworm \
+    --debian-installer live \
+    --binary-images iso-hybrid \
+    --archive-areas "main contrib non-free non-free-firmware" \
+    --bootappend-live "boot=live components username=rogue" \
+    --linux-flavours amd64 \
+    "$@"
