@@ -5,7 +5,7 @@ set(SRC_DIR ${CMAKE_SOURCE_DIR}/src)
 
 add_executable(rogueos_desktop
     ${SRC_DIR}/main_desktop.cpp
-    ${SRC_DIR}/modules/command_router.cpp
+    ${SRC_DIR}/cli/router.cpp
     ${SRC_DIR}/cli/help.cpp
 )
 
@@ -13,7 +13,7 @@ find_package(SDL2 REQUIRED)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(LVGL REQUIRED lvgl)
 
-include_directories(${SDL2_INCLUDE_DIRS} ${LVGL_INCLUDE_DIRS} ${SRC_DIR} ${SRC_DIR}/modules ${SRC_DIR}/cli)
+include_directories(${SDL2_INCLUDE_DIRS} ${LVGL_INCLUDE_DIRS} ${SRC_DIR} ${SRC_DIR}/cli)
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)

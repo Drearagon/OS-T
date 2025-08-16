@@ -1,5 +1,5 @@
-#include "help.hpp"
+#include "help.h"
 
-std::string cli_help(const std::vector<std::string>&) {
-    return "RogueOS Core Help:\n  help - show this message\n";
+std::string cli_help() {
+    return "Available commands:\n - help        Show this message\n";
 }

@@ -6,25 +6,17 @@
 #include <SDL2/SDL.h>
 #include <lvgl.h>
 #include <lvgl/lv_drivers/sdl/sdl.h>
-#include "modules/command_router.hpp"
+#include "cli/router.h"
 
 using tcp = boost::asio::ip::tcp;
 namespace http = boost::beast::http;
 namespace websocket = boost::beast::websocket;
 
-std::string run_bash(const std::string& cmd) {
-    FILE* pipe = popen(cmd.c_str(), "r");
-    if (!pipe) return "error\n";
-    std::string output;
-    char buffer[128];
-    while (fgets(buffer, sizeof(buffer), pipe)) {
-        output += buffer;
-    }
-    pclose(pipe);
-    return output;
+std::string processInput(const std::string& input) {
+    return router::handleCommand(input);
 }
 
-void session(tcp::socket socket, CommandRouter& router) {
+void session(tcp::socket socket) {
     try {
         boost::beast::flat_buffer buffer;
         http::request<http::string_body> req;
@@ -37,7 +29,7 @@ void session(tcp::socket socket, CommandRouter& router) {
                 boost::beast::flat_buffer buff;
                 ws.read(buff);
                 std::string cmd = boost::beast::buffers_to_string(buff.data());
-                std::string result = router.route(cmd);
+                std::string result = processInput(cmd);
                 ws.text(true);
                 ws.write(boost::asio::buffer(result));
             }
@@ -64,13 +56,11 @@ int main() {
     boost::asio::io_context ioc;
     tcp::acceptor acceptor{ioc, {tcp::v4(), 8080}};
 
-    CommandRouter router(run_bash);
-
     std::thread server([&]() {
         for (;;) {
             tcp::socket socket{ioc};
             acceptor.accept(socket);
-            std::thread(session, std::move(socket), std::ref(router)).detach();
+            std::thread(session, std::move(socket)).detach();
         }
     });
 
