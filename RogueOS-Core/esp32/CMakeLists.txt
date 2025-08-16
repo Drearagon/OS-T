@@ -7,14 +7,12 @@ set(SRC_DIR ${CMAKE_SOURCE_DIR}/src)
 
 set(COMPONENT_SRCS
     ${SRC_DIR}/main_esp32.cpp
-    ${SRC_DIR}/modules/command_router.cpp
-    ${SRC_DIR}/modules/serial_cli.cpp
+    ${SRC_DIR}/cli/router.cpp
     ${SRC_DIR}/cli/help.cpp
 )
 
 set(COMPONENT_ADD_INCLUDEDIRS
     ${SRC_DIR}
-    ${SRC_DIR}/modules
     ${SRC_DIR}/cli
 )
 
